@@ -8,5 +8,5 @@ export default function Home() {
         <Timer time={10} />
       </div>
     </div>
-  ); // JSX>
+  );
 }
