@@ -1,36 +1,39 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { texts } from "../utils/texts";
 
 const MAX_TIME = 30;
 
 export const useGame = () => {
   const [time, setTime] = useState(0);
-  const [text, setText] = useState("");
+  const wordsRef = useRef<string[][]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const startGame = () => {
+  const startGame = useCallback(() => {
     setIsPlaying(true);
     setTime(MAX_TIME);
-    setText(texts[Math.floor(Math.random() * texts.length)]);
-  };
+    const text = texts[Math.floor(Math.random() * texts.length)];
+    handleWords(text);
+  }, []);
 
+  const handleWords = (text: string) => {
+    const words = text.split(" ").map((word) => word.split(""));
+    wordsRef.current = words;
+    console.log(wordsRef.current);
+  };
   useEffect(() => {
     if (!isPlaying) {
       return;
     }
-    if (isPlaying && time === 0) {
+    if (time === 0) {
       setIsPlaying(false);
-      setText(texts[Math.floor(Math.random() * texts.length)]);
     }
 
     const interval = setInterval(() => {
-      if (time > 0) {
-        setTime(time - 1);
-      }
+      setTime((prev) => prev - 1);
     }, 1000);
 
     return () => clearInterval(interval);
   }, [isPlaying, time]);
 
-  return { time, text, isPlaying, startGame };
+  return { time, isPlaying, wordsRef, startGame };
 };

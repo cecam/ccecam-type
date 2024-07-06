@@ -5,14 +5,14 @@ import { useGame } from "@/hooks/useGame";
 import Game from "@/components/Game";
 
 export default function Home() {
-  const { time, text, isPlaying, startGame } = useGame();
+  const { time, wordsRef: words, isPlaying, startGame } = useGame();
   return (
     <div>
       <Header />
       {isPlaying ? (
         <div className="px-10 py-5">
           <Timer time={time} />
-          <Game text={text} />
+          <Game text={words.current} />
         </div>
       ) : (
         <div className="px-10 py-5">
