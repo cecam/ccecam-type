@@ -1,11 +1,10 @@
-import { FC } from "react";
+import { FC, memo } from "react";
 
 interface GameProps {
   text: string[][];
 }
 
 const Game: FC<GameProps> = ({ text }) => {
-  console.log(text);
   if (text.length === 0) return null;
   return (
     <div>
@@ -22,4 +21,4 @@ const Game: FC<GameProps> = ({ text }) => {
   );
 };
 
-export default Game;
+export default memo(Game);
